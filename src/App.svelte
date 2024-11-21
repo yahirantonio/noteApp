@@ -1,47 +1,58 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import Pills from "./lib/Pills.svelte";
+  import Header from "./lib/Header.svelte";
+
+  let states = [0, 1, 2];
+
+  setTimeout(()=>{
+   let pills = document.querySelectorAll('.pill');
+
+   // @ts-ignore
+   pills[0].style.transform = 'translateX(-180px)';
+
+   // @ts-ignore
+   pills[2].style.transform = 'translateX(180px)';
+
+  }, 1100)
 </script>
 
+<Header />
+
 <main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+  <h1 class="title berkshire">Home</h1>
 
-  <div class="card">
-    <Counter />
+  <div class="pill_container">
+    <Pills title="Hecho" status={0} />
+    <Pills title="Por Hacer" status={1} />
+    <Pills title="Progreso" status={2} />
   </div>
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
+  <div class="notes_container">
 
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  </div>
+
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  .pill_container{
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    max-width: 30%;
+    min-height: 40px;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  .title{
+    text-align: center;
+    font-size: 2.225rem;
+    margin-top: 0;
+    margin-bottom: 3rem;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+
+  .notes_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
   }
 </style>

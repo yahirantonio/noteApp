@@ -1,4 +1,7 @@
 import { mount } from 'svelte'
+import '@fontsource/berkshire-swash'
+import '@fontsource/montserrat'
+import '@fontsource/lato'
 import './app.css'
 import App from './App.svelte'
 
