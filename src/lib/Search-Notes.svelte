@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
    let title = $state("");
    
    const handleWidth = () => {
@@ -20,7 +22,6 @@
 </script>
 
 <div class="search_container" class:growBox={title.length}>
-   <!-- <span class="material-symbols-outlined icon_search" onclick={focusInput}> -->
    <span class="material-symbols-outlined icon_search">
       search
    </span>

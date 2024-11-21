@@ -1,19 +1,17 @@
 <script>
   import Pills from "./lib/Pills.svelte";
   import Header from "./lib/Header.svelte";
+  import Note from "./lib/Note.svelte";
 
   let states = [0, 1, 2];
 
-  setTimeout(()=>{
-   let pills = document.querySelectorAll('.pill');
+  setTimeout(() => {
+    let pills = document.querySelectorAll(".pill");
 
-   // @ts-ignore
-   pills[0].style.transform = 'translateX(-180px)';
+    pills[0].style.transform = "translateX(-180px)";
 
-   // @ts-ignore
-   pills[2].style.transform = 'translateX(180px)';
-
-  }, 1100)
+    pills[2].style.transform = "translateX(180px)";
+  }, 1100);
 </script>
 
 <Header />
@@ -28,13 +26,17 @@
   </div>
 
   <div class="notes_container">
-
+    <Note
+      title="Titulo"
+      body="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur elementum tellus et ante sagittis, nec interdum eros imper..."
+      date="21/02/2023"
+      tag="Educacion"
+    />
   </div>
-
 </main>
 
 <style>
-  .pill_container{
+  .pill_container {
     display: flex;
     justify-content: space-evenly;
     margin: auto;
@@ -42,17 +44,19 @@
     min-height: 40px;
   }
 
-  .title{
+  .title {
     text-align: center;
     font-size: 2.225rem;
     margin-top: 0;
     margin-bottom: 3rem;
   }
 
-  .notes_container{
+  .notes_container {
+    width: 90%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: auto;
+    margin-top: 40px;
   }
 </style>

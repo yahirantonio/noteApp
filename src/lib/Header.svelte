@@ -1,5 +1,4 @@
 <script>
-   import Icon from "@iconify/svelte";
    import SearchNotes from "./Search-Notes.svelte";
    import { onMount } from "svelte";
    import flatpickr from "flatpickr";
@@ -7,7 +6,7 @@
 
    let inputElement;
 
-   let date = $state('');
+   let date = $state("");
 
    onMount(() => {
       flatpickr(inputElement, {
@@ -15,17 +14,17 @@
          dateFormat: "Y-m-d", // Formato de fecha
          altInput: true,
          altInputClass: "my-custom-class",
-         defaultDate: new Date()
+         defaultDate: new Date(),
       });
    });
 </script>
 
 <header class="header">
    <div class="container">
-      <Icon icon="charm:menu-hamburger" width="41" style="" />
+      <span class="material-symbols-outlined menu_icon"> menu </span>
       <SearchNotes />
    </div>
-   <input type="text" bind:this={inputElement} bind:value={date}/>
+   <input type="text" bind:this={inputElement} bind:value={date} />
 </header>
 
 <style>
@@ -37,8 +36,13 @@
       margin-bottom: 26px;
       margin-top: 26px;
    }
-   
-   .container{
+
+   .menu_icon{
+      cursor: pointer;
+      font-size: 41px;
+   }
+
+   .container {
       display: flex;
       justify-content: space-between;
       gap: 70px;
