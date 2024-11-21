@@ -3,8 +3,8 @@
 </script>
 
 <div class="card">
-   <div class="title">{title}</div>
-   <div class="body">{body}</div>
+   <h3 class="title">{title}</h3>
+   <p class="body">{body}</p>
    <div class="footer">
       <p class="date">{date}</p>
       <p class="tag">{tag}</p>
@@ -23,6 +23,7 @@
       font-family: "Lato";
       font-weight: bold;
       font-size: 1.5rem;
+      margin:0;
       margin-bottom: 13px;
    }
    .body {
