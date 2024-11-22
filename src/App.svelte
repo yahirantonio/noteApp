@@ -2,6 +2,7 @@
   import Pills from "./lib/Pills.svelte";
   import Header from "./lib/Header.svelte";
   import Note from "./lib/Note.svelte";
+  import Banner from "./lib/Banner.svelte";
 
   let states = [0, 1, 2];
 
@@ -34,6 +35,8 @@
     />
   </div>
 </main>
+
+<Banner />
 
 <style>
   .pill_container {
