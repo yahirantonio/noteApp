@@ -3,6 +3,7 @@
    import { onMount } from "svelte";
    import flatpickr from "flatpickr";
    import "flatpickr/dist/themes/dark.css";
+    import { invisibleBanner } from "../stores/store";
 
    let inputElement;
 
@@ -17,11 +18,17 @@
          defaultDate: new Date(),
       });
    });
+
+   function switchSideBar(){
+      invisibleBanner.set(false);
+   }
 </script>
 
 <header class="header">
    <div class="container">
-      <span class="material-symbols-outlined menu_icon"> menu </span>
+      <button class="menu_button" onclick={switchSideBar}>
+         <span class="material-symbols-outlined menu_icon"> menu </span>
+      </button>
       <SearchNotes />
    </div>
    <input type="text" bind:this={inputElement} bind:value={date} />
@@ -37,8 +44,13 @@
       margin-top: 26px;
    }
 
-   .menu_icon{
+   .menu_button{
+      border: 0;
+      background-color: transparent;
       cursor: pointer;
+   }
+
+   .menu_icon{
       font-size: 41px;
    }
 

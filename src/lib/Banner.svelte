@@ -1,9 +1,18 @@
 <script>
+    import { link } from "svelte-spa-router";
+    import { invisibleBanner } from "../stores/store";
+
    let date = new Date();
+   
+   function switchSideBar(){
+      invisibleBanner.set(true);
+   }
 </script>
 
-<nav class="nav">
-   <span class="material-symbols-outlined chevron"> arrow_back_ios_new </span>
+<nav class="nav" class:hidden_nav={$invisibleBanner} >
+   <button onclick={switchSideBar} class="switchSideBar">
+      <span class="material-symbols-outlined chevron"> arrow_back_ios_new </span>
+   </button>
    <div class="header_nav">
       <img src="https://picsum.photos/60/60" class="user_image" alt="Persona" />
       <p class="user_name">Juan alvarado</p>
@@ -16,19 +25,19 @@
    <ul class="nav_container">
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> home </span>
-         <a href="#" class="white">Home</a>
+         <a href="/" class="white" use:link>Home</a>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#" class="white">New Note</a>
+         <a href="#/" class="white" use:link>New Note</a>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> draft </span>
-         <a href="#" class="white">Recent Note</a>
+         <a href="#/" class="white"  use:link>Recent Note</a>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> history </span>
-         <a href="#" class="white">History</a>
+         <a href="/history" class="white" use:link>History</a>
       </li>
    </ul>
 </nav>
@@ -39,21 +48,34 @@
       position: absolute;
       left: 0px;
       top: 0px;
-      width: 277px;
-      max-width: 277px;
+      width: 250px;
+      max-width: 250px;
       padding: 0px 19px 0 19px;
       z-index: 2;
       height: 100vh;
       border-radius: 0 20px 20px 0;
       color: white;
+      transform: translateX(0);
+      transition: all 1s ease;
+   }
+
+   .hidden_nav{
+      transform: translateX(-100%);
+   }
+
+   .switchSideBar{
+      background-color: transparent;
+      box-shadow: none;
+      border: 0;
+      color: white;
+      float: right;
+      margin-top: 26px;
+      margin-bottom: 28px;
+      cursor: pointer;
    }
 
    .chevron {
       font-size: 30px;
-      margin-top: 26px;
-      margin-bottom: 28px;
-      float: right;
-      cursor: pointer;
    }
 
    .header_nav {

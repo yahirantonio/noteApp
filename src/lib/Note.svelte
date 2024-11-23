@@ -1,5 +1,5 @@
 <script>
-   let { title, body, date, tag } = $props();
+   let { title, body, date, tag, state } = $props();
 </script>
 
 <div class="card">
