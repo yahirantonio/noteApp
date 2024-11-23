@@ -1,26 +1,31 @@
 <script>
   import Pills from "../lib/Pills.svelte";
-  import Header from "../lib/Header.svelte";
   import Note from "../lib/Note.svelte";
   import Banner from "../lib/Banner.svelte";
+  import SearchNotes from "../lib/Search-Notes.svelte";
+  import SwitchSideBar from "../lib/SwitchSideBar.svelte";
+  import InputDate from "../lib/InputDate.svelte";
 
   import { dataNotes } from "../stores/store";
 
   setTimeout(() => {
     let pills = document.querySelectorAll(".pill");
-
     // @ts-ignore
     pills[0].style.transform = "translateX(-180px)";
-
     // @ts-ignore
     pills[2].style.transform = "translateX(180px)";
   }, 1100);
 
-
-
+  let notes = $state($dataNotes);
 </script>
 
-<Header />
+<header class="header">
+  <div class="container">
+    <SwitchSideBar />
+    <SearchNotes />
+  </div>
+  <InputDate />
+</header>
 
 <main>
   <h1 class="title berkshire">Home</h1>
@@ -37,7 +42,7 @@
     {/each}
   </div>
 
-  {#if $dataNotes.length > 1}
+  {#if $dataNotes.length > 8}
     <button class="verMas">Ver mas</button>
   {/if}
 </main>
@@ -45,6 +50,21 @@
 <Banner />
 
 <style>
+  .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 100px;
+      margin-bottom: 26px;
+      margin-top: 26px;
+   }
+
+   .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 70px;
+   }
+
   .pill_container {
     display: flex;
     justify-content: space-evenly;
@@ -84,7 +104,7 @@
     margin-bottom: 20px;
   }
 
-  .verMas:hover{
+  .verMas:hover {
     background-color: #fcfcfc;
   }
 </style>
