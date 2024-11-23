@@ -425,3 +425,15 @@ a{
 a:hover{
    text-decoration: underline;
 }
+
+.hecho{
+   box-shadow: 0 4px 20px #52CF1B;
+}
+
+.por_hacer{
+   box-shadow: 0 4px 20px #ff9999;
+}
+
+.progreso{
+   box-shadow: 0 4px 20px #28C9CC;
+}
