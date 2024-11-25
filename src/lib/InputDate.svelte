@@ -5,8 +5,8 @@
 
    let inputElement;
 
-   let date = $state("");
-
+   let {date = $bindable()} = $props();
+   
    onMount(() => {
       flatpickr(inputElement, {
          enableTime: false, // Habilita la selección de hora

@@ -16,7 +16,12 @@
     pills[2].style.transform = "translateX(180px)";
   }, 1100);
 
-  let notes = $state($dataNotes);
+  let date = $state("");
+
+ 
+
+  let notes = $derived($dataNotes.filter(note=> note.fecha == date));
+  $inspect(notes)
 </script>
 
 <header class="header">
@@ -24,7 +29,7 @@
     <SwitchSideBar />
     <SearchNotes />
   </div>
-  <InputDate />
+  <InputDate bind:date={date} />
 </header>
 
 <main>
@@ -37,12 +42,12 @@
   </div>
 
   <div class="notes_container">
-    {#each $dataNotes as note}
+    {#each notes as note}
       <Note {...note} />
     {/each}
   </div>
 
-  {#if $dataNotes.length > 8}
+  {#if notes.length > 8}
     <button class="verMas">Ver mas</button>
   {/if}
 </main>
