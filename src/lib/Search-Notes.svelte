@@ -1,7 +1,6 @@
 <script>
 // @ts-nocheck
-
-   let title = $state("");
+   let {title=$bindable()} = $props()
    
    const handleWidth = () => {
       let input = document.querySelector(".search_input");

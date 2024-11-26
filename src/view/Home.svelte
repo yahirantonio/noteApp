@@ -6,6 +6,8 @@
   import SwitchSideBar from "../lib/SwitchSideBar.svelte";
   import InputDate from "../lib/InputDate.svelte";
 
+  import Fuse from "fuse.js";
+
   import { dataNotes } from "../stores/store";
 
   setTimeout(() => {
@@ -17,19 +19,30 @@
   }, 1100);
 
   let date = $state("");
+  let title = $state("");
 
- 
+  const options = {
+    includeScore: false, // Incluir la puntuación de coincidencia (opcional)
+    threshold: 0.4, // Cuanto más bajo, más estricta es la búsqueda (0.0 - 1.0)
+    keys: ["titulo"],
+  };
 
-  let notes = $derived($dataNotes.filter(note=> note.fecha == date));
-  $inspect(notes)
+  let notes = $derived.by(() => {
+    let data = $dataNotes.filter((note) => note.fecha == date);
+    if (title.length == 0) return data;
+
+    const fuse = new Fuse(data, options);
+    let resultado = fuse.search(title);
+    return resultado.map((value) => value.item);
+  });
 </script>
 
 <header class="header">
   <div class="container">
     <SwitchSideBar />
-    <SearchNotes />
+    <SearchNotes bind:title />
   </div>
-  <InputDate bind:date={date} />
+  <InputDate bind:date />
 </header>
 
 <main>
@@ -56,19 +69,19 @@
 
 <style>
   .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0 100px;
-      margin-bottom: 26px;
-      margin-top: 26px;
-   }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 100px;
+    margin-bottom: 26px;
+    margin-top: 26px;
+  }
 
-   .container {
-      display: flex;
-      justify-content: space-between;
-      gap: 70px;
-   }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    gap: 70px;
+  }
 
   .pill_container {
     display: flex;
