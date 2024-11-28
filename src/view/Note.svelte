@@ -6,16 +6,12 @@
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
 
    import { dataNotes, dataStatus } from "../stores/store";
-   import { location } from "svelte-spa-router";
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
 
-   let note = $state(
-      $dataNotes.find(
-         (note) =>
-            note.notaID == parseInt($location.charAt($location.length - 1)),
-      ),
-   );
+   let { params } = $props();
+
+   let note = $state($dataNotes.find((note) => note.notaID == params.id));
 
    let quill;
 
@@ -25,14 +21,12 @@
       });
    });
 
-   function save(){
-      console.log(quill.getSemanticHTML())
-      note.texto = quill.getSemanticHTML()
+   function save() {
+      console.log(quill.getSemanticHTML());
+      note.texto = quill.getSemanticHTML();
    }
 
-   $inspect(note.texto)
-
-
+   // $inspect(params.id)
 </script>
 
 <header class="header">
@@ -46,7 +40,9 @@
    <div class="body">
       <select name="states" id="inputStates" bind:value={note.estado}>
          {#each $dataStatus as status}
-            <option value={status.estadoID} class="option">{status.nombre}</option>
+            <option value={status.estadoID} class="option"
+               >{status.nombre}</option
+            >
          {/each}
       </select>
       <input type="text" class="etiqueta" bind:value={note.etiqueta} />
@@ -82,7 +78,7 @@
       min-height: 40px;
    }
 
-   .etiqueta{
+   .etiqueta {
       box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.25);
       border: 0px;
       background-color: white;
@@ -111,7 +107,7 @@
       margin-bottom: 1rem;
    }
 
-   .save{
+   .save {
       background-color: green;
       padding: 10px;
       color: white;
@@ -123,12 +119,12 @@
       cursor: pointer;
    }
 
-   .save:hover{
+   .save:hover {
       background-color: rgb(11, 158, 11);
    }
 
    #editor {
       background-color: white;
-      font-family: 'Montserrat';
+      font-family: "Montserrat";
    }
 </style>
