@@ -6,14 +6,14 @@
    const status = $derived($dataStatus.find(dataStatus => dataStatus.estadoID == statusID))
 
    let colorNote = {
-    1: "done",
-    2: "progress",
-    3: "todo",
+    0: "done",
+    1: "progress",
+    2: "todo",
   };
   
 </script>
 
-<div class={'pill ' + colorNote[status.estado]} >
+<div class={'pill ' + colorNote[status.estadoID]} >
    <p class="pill_text monserrat">{status.nombre}</p>
 </div>
 

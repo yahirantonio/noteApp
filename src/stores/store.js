@@ -5,22 +5,19 @@ export const invisibleBanner = writable(true);
 export const dataStatus = readable([
    {
       estadoID: 0,
-      estado: 1,
       nombre: "hecho"
    },
    {
       estadoID: 1,
-      estado: 2,
       nombre: "por hacer"
    },
    {
       estadoID: 2,
-      estado: 3,
       nombre: "progreso"
    }
 ])
 
-export const dataNotes = readable([
+export const dataNotes = writable([
    {
       "notaID": 1,
       "titulo": "Ejemplo de título",

@@ -8,6 +8,7 @@
    import { dataNotes, dataStatus } from "../stores/store";
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
+   import {putNote} from "../utils/api"
 
    let { params } = $props();
 
@@ -22,11 +23,11 @@
    });
 
    function save() {
-      console.log(quill.getSemanticHTML());
-      note.texto = quill.getSemanticHTML();
+      note.texto = quill.getSemanticHTML()
+      putNote(note)
    }
 
-   // $inspect(params.id)
+   $inspect($dataNotes)
 </script>
 
 <header class="header">
@@ -50,7 +51,8 @@
    <div id="editor">
       {note.texto}
    </div>
-   <button class="save" onclick={save}>Save</button>
+   <button class="save" onclick={save}>Guardar</button>
+   <!-- <button class="delete" onclick={drop}>Eliminar</button> -->
 </main>
 
 <style>
@@ -105,6 +107,7 @@
       border: 0;
       border-radius: 10px;
       margin-bottom: 1rem;
+      width: 80%;
    }
 
    .save {
@@ -114,13 +117,30 @@
       font-weight: bold;
       margin-top: 20px;
       border: 0px;
-      border-radius: 5px;
+      border-radius: 10px;
       float: right;
       cursor: pointer;
    }
 
    .save:hover {
       background-color: rgb(11, 158, 11);
+   }
+
+   .delete{
+      background-color: red;
+      padding: 10px;
+      color: white;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-right: 20px;
+      border: 0px;
+      border-radius: 10px;
+      float: right;
+      cursor: pointer;
+   }
+
+   .delete:hover {
+      background-color: rgb(255, 73, 73);
    }
 
    #editor {
