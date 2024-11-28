@@ -18,7 +18,9 @@
     pills[2].style.transform = "translateX(180px)";
   }, 1100);
 
-  let date = $state("");
+  let today = new Date()
+
+  let date = $state(`${today.getFullYear().toString()}-${String(today.getMonth() + 1)}-${today.getDate().toString()}-`);
   let title = $state("");
 
   const options = {

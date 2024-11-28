@@ -1,12 +1,12 @@
 <script>
     import { push } from "svelte-spa-router";
 
-   let { notaID, titulo, texto, etiqueta, fecha, estado } = $props();
+   let { notaID, titulo, texto, etiqueta, fecha, estadoID } = $props();
 
    function stylesestados() {
-      if (estado == 1) return "hecho";
-      if (estado == 2) return "por_hacer";
-      if (estado == 3) return "progreso";
+      if (estadoID == 0) return "hecho";
+      if (estadoID == 1) return "por_hacer";
+      if (estadoID == 2) return "progreso";
    }
 
    function moveToNote(){

@@ -10,8 +10,6 @@
     2: "progress",
     3: "todo",
   };
-
-  $inspect(status)
   
 </script>
 
