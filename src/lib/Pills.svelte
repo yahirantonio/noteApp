@@ -1,16 +1,22 @@
 <script>
-   let {title, status} = $props();
+    import { dataStatus } from "../stores/store";
+
+   let {statusID} = $props();
+
+   const status = $derived($dataStatus.find(dataStatus => dataStatus.estadoID == statusID))
 
    let colorNote = {
-    0: "done",
-    1: "progress",
-    2: "todo",
+    1: "done",
+    2: "progress",
+    3: "todo",
   };
+
+  $inspect(status)
   
 </script>
 
-<div class={'pill ' + colorNote[status]} >
-   <p class="pill_text monserrat">{title}</p>
+<div class={'pill ' + colorNote[status.estado]} >
+   <p class="pill_text monserrat">{status.nombre}</p>
 </div>
 
 <style>

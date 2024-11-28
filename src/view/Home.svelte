@@ -49,9 +49,9 @@
   <h1 class="title berkshire">Home</h1>
 
   <div class="pill_container">
-    <Pills title="Hecho" status={0} />
-    <Pills title="Por Hacer" status={1} />
-    <Pills title="Progreso" status={2} />
+    <Pills statusID={0} />
+    <Pills statusID={1} />
+    <Pills statusID={2} />
   </div>
 
   <div class="notes_container">

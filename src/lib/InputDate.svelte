@@ -13,7 +13,7 @@
          dateFormat: "Y-m-d", // Formato de fecha
          altInput: true,
          altInputClass: "my-custom-class",
-         defaultDate: new Date(),
+         defaultDate: date,
       });
    });
 </script>

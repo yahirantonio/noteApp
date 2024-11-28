@@ -1,4 +1,6 @@
 <script>
+    import { push } from "svelte-spa-router";
+
    let { notaID, titulo, texto, etiqueta, fecha, estado } = $props();
 
    function stylesestados() {
@@ -6,9 +8,13 @@
       if (estado == 2) return "por_hacer";
       if (estado == 3) return "progreso";
    }
+
+   function moveToNote(){
+      push('/note/' + notaID)
+   }
 </script>
 
-<div class="card {stylesestados()}" role="button" tabindex="0" id={notaID}>
+<div class="card {stylesestados()}" role="button" tabindex="0" id={notaID} onclick={moveToNote}>
    <h3 class="title">{titulo}</h3>
    <p class="body">{texto}</p>
    <div class="footer">

@@ -12,9 +12,9 @@ export default {
     }),
 
     // Wrapping the Book component
-   //  '/book/*': wrap({
-   //      asyncComponent: () => import('./routes/Book.svelte')
-   //  }),
+    '/note/:id?': wrap({
+        asyncComponent: () => import('../view/Note.svelte')
+    }),
 
     // Catch-all route last
    //  '*': NotFound,
