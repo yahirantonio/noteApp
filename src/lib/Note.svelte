@@ -16,7 +16,9 @@
 
 <div class="card {stylesestados()}" role="button" tabindex="0" id={notaID} onclick={moveToNote}>
    <h3 class="title">{titulo}</h3>
-   <p class="body">{texto}</p>
+   <div class="body">
+      {@html texto}
+   </div>
    <div class="footer">
       <p class="date">{fecha}</p>
       <p class="tag">{etiqueta}</p>

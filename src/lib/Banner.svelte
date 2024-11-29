@@ -29,7 +29,7 @@
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/" class="white" use:link>New Note</a>
+         <a href="#/note/" class="white" use:link>New Note</a>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> draft </span>

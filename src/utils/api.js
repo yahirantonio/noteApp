@@ -13,7 +13,10 @@ export const putNote = (data) => {
 }
 
 export const postNote = (data) => {
-   dataNotes.update(datanote => [...datanote, data])
+   dataNotes.update(datanote => {
+      const lastElement = datanote[datanote.length - 1];
+      return [...datanote, { ...data, notaID: lastElement.notaID + 1}]
+   })
 }
 
 export const dropNote = (id) => {

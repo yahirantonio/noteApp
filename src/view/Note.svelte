@@ -8,11 +8,22 @@
    import { dataNotes, dataStatus } from "../stores/store";
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
-   import {putNote} from "../utils/api"
+   import { dropNote, postNote, putNote } from "../utils/api";
+    import { replace } from "svelte-spa-router";
 
    let { params } = $props();
 
-   let note = $state($dataNotes.find((note) => note.notaID == params.id));
+   let note = $state(
+      params.id
+         ? $dataNotes.find((note) => note.notaID == params.id)
+         : {
+              titulo: "Titulo...",
+              texto: "Escribe tu texto aqui...",
+              etiqueta: "Etiqueta...",
+              fecha: "2024-11-22",
+              estadoID: 1,
+           }
+   );
 
    let quill;
 
@@ -23,11 +34,24 @@
    });
 
    function save() {
-      note.texto = quill.getSemanticHTML()
-      putNote(note)
+      note.texto = quill.getSemanticHTML();
+      if (params.id) {
+         putNote(note);
+      } else {
+         postNote(note);
+      }
    }
 
-   $inspect($dataNotes)
+   function drop() {
+      if(note.notaID){
+         dropNote(note.notaID);
+         replace('/')
+      } else {
+         replace('/')
+      }
+   }
+
+   $inspect($dataNotes);
 </script>
 
 <header class="header">
@@ -39,7 +63,7 @@
    <Banner />
    <input type="text" class="berkshire titulo" bind:value={note.titulo} />
    <div class="body">
-      <select name="states" id="inputStates" bind:value={note.estado}>
+      <select name="states" id="inputStates" bind:value={note.estadoID}>
          {#each $dataStatus as status}
             <option value={status.estadoID} class="option"
                >{status.nombre}</option
@@ -52,7 +76,7 @@
       {note.texto}
    </div>
    <button class="save" onclick={save}>Guardar</button>
-   <!-- <button class="delete" onclick={drop}>Eliminar</button> -->
+   <button class="delete" onclick={drop}>Eliminar</button>
 </main>
 
 <style>
@@ -126,7 +150,7 @@
       background-color: rgb(11, 158, 11);
    }
 
-   .delete{
+   .delete {
       background-color: red;
       padding: 10px;
       color: white;
