@@ -21,6 +21,7 @@
               texto: "Escribe tu texto aqui...",
               etiqueta: "Etiqueta...",
               fecha: $today,
+              content: [],
               estadoID: 1,
            }
    );
@@ -31,10 +32,17 @@
       quill = new Quill("#editor", {
          theme: "snow",
       });
+
+      quill.setContents(note.content)
+      // quill.setText(note.texto)
    });
 
+   $inspect($dataNotes)
+
    function save() {
+      // console.log(quill.getSemanticHTML())
       note.texto = quill.getSemanticHTML();
+      note.content = quill.getContents();
       if (params.id) {
          putNote(note);
       } else {
@@ -71,7 +79,7 @@
       <input type="text" class="etiqueta" bind:value={note.etiqueta} />
    </div>
    <div id="editor">
-      {note.texto}
+      <!-- {note.texto} -->
    </div>
    <button class="save" onclick={save}>Guardar</button>
    <button class="delete" onclick={drop}>Eliminar</button>
