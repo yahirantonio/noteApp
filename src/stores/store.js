@@ -2,6 +2,11 @@ import { readable, writable } from "svelte/store";
 
 export const invisibleBanner = writable(true);
 
+export const today = readable('', (set) => {
+   let today = new Date()
+   set(`${today.getFullYear().toString()}-${String(today.getMonth() + 1)}-${today.getDate().toString()}`)
+})
+
 export const dataStatus = readable([
    {
       estadoID: 0,

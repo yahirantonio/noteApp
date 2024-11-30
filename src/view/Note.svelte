@@ -5,7 +5,7 @@
    import Banner from "../lib/Banner.svelte";
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
 
-   import { dataNotes, dataStatus } from "../stores/store";
+   import { dataNotes, dataStatus, today } from "../stores/store";
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
    import { dropNote, postNote, putNote } from "../utils/api";
@@ -20,7 +20,7 @@
               titulo: "Titulo...",
               texto: "Escribe tu texto aqui...",
               etiqueta: "Etiqueta...",
-              fecha: "2024-11-22",
+              fecha: $today,
               estadoID: 1,
            }
    );

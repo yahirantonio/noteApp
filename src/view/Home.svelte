@@ -8,7 +8,7 @@
 
   import Fuse from "fuse.js";
 
-  import { dataNotes } from "../stores/store";
+  import { dataNotes, today } from "../stores/store";
 
   setTimeout(() => {
     let pills = document.querySelectorAll(".pill");
@@ -18,9 +18,7 @@
     pills[2].style.transform = "translateX(180px)";
   }, 1100);
 
-  let today = new Date()
-
-  let date = $state(`${today.getFullYear().toString()}-${String(today.getMonth() + 1)}-${today.getDate().toString()}-`);
+  let date = $state($today);
   let title = $state("");
 
   const options = {
