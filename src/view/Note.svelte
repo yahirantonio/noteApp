@@ -50,8 +50,6 @@
          replace('/')
       }
    }
-
-   $inspect($dataNotes);
 </script>
 
 <header class="header">

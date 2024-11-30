@@ -1,17 +1,34 @@
 <script>
-    import { link } from "svelte-spa-router";
-    import { invisibleBanner } from "../stores/store";
+   import { link } from "svelte-spa-router";
+   import { dataNotes, invisibleBanner, today } from "../stores/store";
 
    let date = new Date();
-   
-   function switchSideBar(){
+
+   // const recentNote = $derived(
+   //    $dataNotes.filter((note) => note.fecha == $today),
+   // );
+
+   const recentNote = $derived.by(()=>{
+      let count = 0;
+      return $dataNotes.filter((note) => {
+         if(note.fecha == $today && count < 3){
+            count++;
+            return true
+         }
+         return false;
+      })
+   });
+
+   function switchSideBar() {
       invisibleBanner.set(true);
    }
 </script>
 
-<nav class="nav" class:hidden_nav={$invisibleBanner} >
+<nav class="nav" class:hidden_nav={$invisibleBanner}>
    <button onclick={switchSideBar} class="switchSideBar">
-      <span class="material-symbols-outlined chevron"> arrow_back_ios_new </span>
+      <span class="material-symbols-outlined chevron">
+         arrow_back_ios_new
+      </span>
    </button>
    <div class="header_nav">
       <img src="https://picsum.photos/60/60" class="user_image" alt="Persona" />
@@ -25,19 +42,30 @@
    <ul class="nav_container">
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> home </span>
-         <a href="/" class="white" use:link>Home</a>
+         <a href="/" class="white" use:link onclick={switchSideBar}>Home</a>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/note/" class="white" use:link>New Note</a>
+         <a href="#/note/" class="white" use:link onclick={switchSideBar}
+            >New Note</a
+         >
       </li>
       <li class="link_container">
+         <!-- <div> -->
          <span class="material-symbols-outlined sizing"> draft </span>
-         <a href="#/" class="white"  use:link>Recent Note</a>
+         <p class="white recent">Recent Note</p>
+         <!-- </div> -->
+         <ul>
+            {#each recentNote as note}
+               <li><a href={"#/note/" + note.notaID} class="white" use:link>{note.titulo}</a></li>
+            {/each}
+         </ul>
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> history </span>
-         <a href="/history" class="white" use:link>History</a>
+         <a href="/history" class="white" use:link onclick={switchSideBar}
+            >History</a
+         >
       </li>
    </ul>
 </nav>
@@ -59,11 +87,15 @@
       transition: all 1s ease;
    }
 
-   .hidden_nav{
+   .recent {
+      margin: 0;
+   }
+
+   .hidden_nav {
       transform: translateX(-100%);
    }
 
-   .switchSideBar{
+   .switchSideBar {
       background-color: transparent;
       box-shadow: none;
       border: 0;
@@ -98,22 +130,23 @@
       margin: 22px 0;
    }
 
-   .nav_container{
+   .nav_container {
       margin-top: 31px;
    }
 
-   .sizing{
+   .sizing {
       font-size: 30px;
    }
 
-   .white{
+   .white {
       color: white;
    }
 
-   .link_container{
+   .link_container {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin: 12px 0px;
+      flex-wrap: wrap;
    }
 </style>
