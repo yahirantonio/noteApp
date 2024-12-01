@@ -21,7 +21,7 @@
               texto: "Escribe tu texto aqui...",
               etiqueta: "Etiqueta...",
               fecha: $today,
-              content: [{insert:'Este es el contenido de la nota.\n'}],
+              content: [{insert:'Escribe tu texto aqui...\n'}],
               estadoID: 1,
            }
    );
@@ -46,7 +46,8 @@
       if (params.id) {
          putNote(note);
       } else {
-         postNote(note);
+         const id = postNote(note);
+         replace('/note/' + id)
       }
    }
 
