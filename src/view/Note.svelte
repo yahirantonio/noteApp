@@ -21,7 +21,7 @@
               texto: "Escribe tu texto aqui...",
               etiqueta: "Etiqueta...",
               fecha: $today,
-              content: [],
+              content: [{insert:'Este es el contenido de la nota.\n'}],
               estadoID: 1,
            }
    );
@@ -42,7 +42,7 @@
    function save() {
       // console.log(quill.getSemanticHTML())
       note.texto = quill.getSemanticHTML();
-      note.content = quill.getContents();
+      note.content = quill.getContents().ops;
       if (params.id) {
          putNote(note);
       } else {

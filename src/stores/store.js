@@ -29,7 +29,7 @@ export const dataNotes = writable([
       "texto": "Este es el contenido de la nota.",
       "etiqueta": "Personal",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'Este es el contenido de la nota.\n'}],
       "estadoID": 1
    },
    {
@@ -38,7 +38,7 @@ export const dataNotes = writable([
       "texto": "Necesito comprar frutas, verduras, pan, leche, huevos y carne. También debo verificar si hay suficiente café en casa y, si no, añadirlo a la lista.",
       "etiqueta": "Personal",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'Necesito comprar frutas, verduras, pan, leche, huevos y carne. También debo verificar si hay suficiente café en casa y, si no, añadirlo a la lista.\n'}],
       "estadoID": 1
    },
    {
@@ -47,7 +47,7 @@ export const dataNotes = writable([
       "texto": "El proyecto requiere coordinar varias tareas: asignación de roles, establecer fechas límite, y preparar reuniones semanales para el seguimiento. Es crucial definir el alcance y los entregables en la primera reunión.",
       "etiqueta": "Trabajo",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'El proyecto requiere coordinar varias tareas: asignación de roles, establecer fechas límite, y preparar reuniones semanales para el seguimiento. Es crucial definir el alcance y los entregables en la primera reunión.\n'}],
       "estadoID": 2
    },
    {
@@ -56,7 +56,7 @@ export const dataNotes = writable([
       "texto": "Investigar sobre temas actuales en tecnología como inteligencia artificial, ciberseguridad, y avances en desarrollo web. Preparar un borrador inicial para cada tema y buscar imágenes relevantes para ilustrar los artículos.",
       "etiqueta": "Creativo",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'Investigar sobre temas actuales en tecnología como inteligencia artificial, ciberseguridad, y avances en desarrollo web. Preparar un borrador inicial para cada tema y buscar imágenes relevantes para ilustrar los artículos.\n'}],
       "estadoID": 2
    },
    {
@@ -65,7 +65,7 @@ export const dataNotes = writable([
       "texto": "Crear una rutina de ejercicios semanal: lunes, miércoles y viernes para entrenamiento de fuerza; martes y jueves para cardio; y sábado para yoga. También debo recordar calentar antes de cada sesión y estirar al final.",
       "etiqueta": "Salud",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'Crear una rutina de ejercicios semanal: lunes, miércoles y viernes para entrenamiento de fuerza; martes y jueves para cardio; y sábado para yoga. También debo recordar calentar antes de cada sesión y estirar al final.\n'}],
       "estadoID": 1
    },
    {
@@ -74,7 +74,7 @@ export const dataNotes = writable([
       "texto": "En la reunión discutimos los puntos clave del proyecto: definir prioridades, delegar tareas específicas y acordar un cronograma inicial. La próxima reunión será el viernes para evaluar el progreso y ajustar el plan según sea necesario.",
       "etiqueta": "Trabajo",
       "fecha": "2024-11-22",
-      "content": {ops: [{insert:'Escribe texto aqui...\n'}]},
+      "content": [{insert:'En la reunión discutimos los puntos clave del proyecto: definir prioridades, delegar tareas específicas y acordar un cronograma inicial. La próxima reunión será el viernes para evaluar el progreso y ajustar el plan según sea necesario.\n'}],
       "estadoID": 2
    }
 ])
