@@ -9,9 +9,25 @@
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
    import { dropNote, postNote, putNote } from "../utils/api";
-    import { replace } from "svelte-spa-router";
+   import { replace } from "svelte-spa-router";
 
    let { params } = $props();
+   let quill;
+
+   const id = $derived(params.id);
+
+   // let nose = $derived.by(() => {
+   //    return params.id
+   //       ? $dataNotes.find((note) => note.notaID == params.id)
+   //       : {
+   //            titulo: "Titulo...",
+   //            texto: "Escribe tu texto aqui...",
+   //            etiqueta: "Etiqueta...",
+   //            fecha: $today,
+   //            content: [{ insert: "Escribe tu texto aqui...\n" }],
+   //            estadoID: 1,
+   //         };
+   // });
 
    let note = $state(
       params.id
@@ -21,23 +37,45 @@
               texto: "Escribe tu texto aqui...",
               etiqueta: "Etiqueta...",
               fecha: $today,
-              content: [{insert:'Escribe tu texto aqui...\n'}],
+              content: [{ insert: "Escribe tu texto aqui...\n" }],
               estadoID: 1,
-           }
+           },
    );
 
-   let quill;
+   $effect(() => {
+      if (id) {
+         console.log("entro");
+         let dato = $dataNotes.find((note) => note.notaID == params.id);
+         if(note.titulo == dato.titulo) return;
+         note = dato;
+      } else {
+         console.log("no entro");
+         if (note.titulo == "Titulo...") return;
+         note = {
+            titulo: "Titulo...",
+            texto: "Escribe tu texto aqui...",
+            etiqueta: "Etiqueta...",
+            fecha: $today,
+            content: [{ insert: "Escribe tu texto aqui...\n" }],
+            estadoID: 1,
+         };
+      }
+
+      if (quill) {
+         quill.setContents(note.content);
+      }
+   });
 
    onMount(() => {
       quill = new Quill("#editor", {
          theme: "snow",
       });
 
-      quill.setContents(note.content)
+      quill.setContents(note.content);
       // quill.setText(note.texto)
    });
 
-   $inspect($dataNotes)
+   // $inspect($dataNotes);
 
    function save() {
       // console.log(quill.getSemanticHTML())
@@ -47,16 +85,16 @@
          putNote(note);
       } else {
          const id = postNote(note);
-         replace('/note/' + id)
+         replace("/note/" + id);
       }
    }
 
    function drop() {
-      if(note.notaID){
+      if (note.notaID) {
          dropNote(note.notaID);
-         replace('/')
+         replace("/");
       } else {
-         replace('/')
+         replace("/");
       }
    }
 </script>
