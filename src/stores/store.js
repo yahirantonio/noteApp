@@ -38,7 +38,7 @@ export const dataNotes = writable([
       "etiqueta": "Personal",
       "fecha": "2024-11-22",
       "content": [{ insert: 'Este es el contenido de la nota.\n' }],
-      "estadoID": 1
+      "estadoID": 0
    },
    {
       "notaID": 2,
@@ -83,6 +83,6 @@ export const dataNotes = writable([
       "etiqueta": "Trabajo",
       "fecha": "2024-11-22",
       "content": [{ insert: 'En la reunión discutimos los puntos clave del proyecto: definir prioridades, delegar tareas específicas y acordar un cronograma inicial. La próxima reunión será el viernes para evaluar el progreso y ajustar el plan según sea necesario.\n' }],
-      "estadoID": 2
+      "estadoID": 0
    }
 ])

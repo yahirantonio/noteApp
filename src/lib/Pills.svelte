@@ -7,8 +7,8 @@
 
    let colorNote = {
     0: "done",
-    1: "progress",
-    2: "todo",
+    1: "todo",
+    2: "progress",
   };
   
 </script>
