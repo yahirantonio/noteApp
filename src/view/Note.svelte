@@ -5,7 +5,7 @@
    import Banner from "../lib/Banner.svelte";
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
 
-   import { dataNotes, dataStatus, today } from "../stores/store";
+   import { dataNotes, dataStatus, today, note } from "../stores/store";
    import { onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
    import { dropNote, postNote, putNote } from "../utils/api";
@@ -14,84 +14,45 @@
    let { params } = $props();
    let quill;
 
-   const id = $derived(params.id);
+   $note = params.id
+      ? $dataNotes.find((dataNote) => dataNote.notaID == params.id)
+      : {
+           titulo: "Titulo...",
+           texto: "Escribe tu texto aqui...",
+           etiqueta: "Etiqueta...",
+           fecha: $today,
+           content: [{ insert: "Escribe tu texto aqui...\n" }],
+           estadoID: 1,
+        };
 
-   // let nose = $derived.by(() => {
-   //    return params.id
-   //       ? $dataNotes.find((note) => note.notaID == params.id)
-   //       : {
-   //            titulo: "Titulo...",
-   //            texto: "Escribe tu texto aqui...",
-   //            etiqueta: "Etiqueta...",
-   //            fecha: $today,
-   //            content: [{ insert: "Escribe tu texto aqui...\n" }],
-   //            estadoID: 1,
-   //         };
-   // });
-
-   let note = $state(
+   $effect(()=>{
       params.id
-         ? $dataNotes.find((note) => note.notaID == params.id)
-         : {
-              titulo: "Titulo...",
-              texto: "Escribe tu texto aqui...",
-              etiqueta: "Etiqueta...",
-              fecha: $today,
-              content: [{ insert: "Escribe tu texto aqui...\n" }],
-              estadoID: 1,
-           },
-   );
-
-   $effect(() => {
-      if (id) {
-         console.log("entro");
-         let dato = $dataNotes.find((note) => note.notaID == params.id);
-         if(note.titulo == dato.titulo) return;
-         note = dato;
-      } else {
-         console.log("no entro");
-         if (note.titulo == "Titulo...") return;
-         note = {
-            titulo: "Titulo...",
-            texto: "Escribe tu texto aqui...",
-            etiqueta: "Etiqueta...",
-            fecha: $today,
-            content: [{ insert: "Escribe tu texto aqui...\n" }],
-            estadoID: 1,
-         };
-      }
-
-      if (quill) {
-         quill.setContents(note.content);
-      }
-   });
+      if(quill) {quill.setContents($note.content);}
+   })
 
    onMount(() => {
       quill = new Quill("#editor", {
          theme: "snow",
       });
 
-      quill.setContents(note.content);
-      // quill.setText(note.texto)
+      quill.setContents($note.content);
    });
 
-   // $inspect($dataNotes);
-
    function save() {
-      // console.log(quill.getSemanticHTML())
-      note.texto = quill.getSemanticHTML();
-      note.content = quill.getContents().ops;
+      $note.texto = quill.getSemanticHTML();
+      $note.content = quill.getContents().ops;
+
       if (params.id) {
-         putNote(note);
+         putNote($note);
       } else {
-         const id = postNote(note);
+         const id = postNote($note);
          replace("/note/" + id);
       }
    }
 
    function drop() {
-      if (note.notaID) {
-         dropNote(note.notaID);
+      if ($note.notaID) {
+         dropNote($note.notaID);
          replace("/");
       } else {
          replace("/");
@@ -101,24 +62,24 @@
 
 <header class="header">
    <SwitchSideBar />
-   <InputDate bind:date={note.fecha} />
+   <InputDate bind:date={$note.fecha} />
 </header>
 
 <main class="main">
    <Banner />
-   <input type="text" class="berkshire titulo" bind:value={note.titulo} />
+   <input type="text" class="berkshire titulo" bind:value={$note.titulo} />
    <div class="body">
-      <select name="states" id="inputStates" bind:value={note.estadoID}>
+      <select name="states" id="inputStates" bind:value={$note.estadoID}>
          {#each $dataStatus as status}
             <option value={status.estadoID} class="option"
                >{status.nombre}</option
             >
          {/each}
       </select>
-      <input type="text" class="etiqueta" bind:value={note.etiqueta} />
+      <input type="text" class="etiqueta" bind:value={$note.etiqueta} />
    </div>
    <div id="editor">
-      <!-- {note.texto} -->
+      <!-- {$note.texto} -->
    </div>
    <button class="save" onclick={save}>Guardar</button>
    <button class="delete" onclick={drop}>Eliminar</button>

@@ -1,6 +1,6 @@
 <script>
    import { link } from "svelte-spa-router";
-   import { dataNotes, invisibleBanner, today } from "../stores/store";
+   import { dataNotes, invisibleBanner, note, today } from "../stores/store";
 
    let date = new Date();
 
@@ -8,19 +8,31 @@
    //    $dataNotes.filter((note) => note.fecha == $today),
    // );
 
-   const recentNote = $derived.by(()=>{
+   const recentNote = $derived.by(() => {
       let count = 0;
       return $dataNotes.filter((note) => {
-         if(note.fecha == $today && count < 3){
+         if (note.fecha == $today && count < 3) {
             count++;
-            return true
+            return true;
          }
          return false;
-      })
+      });
    });
 
    function switchSideBar() {
       invisibleBanner.set(true);
+   }
+
+   function newNote() {
+      switchSideBar();
+      $note = {
+         titulo: "Titulo...",
+         texto: "Escribe tu texto aqui...",
+         etiqueta: "Etiqueta...",
+         fecha: $today,
+         content: [{ insert: "Escribe tu texto aqui...\n" }],
+         estadoID: 1,
+      };
    }
 </script>
 
@@ -46,7 +58,7 @@
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/note/" class="white" use:link onclick={switchSideBar}
+         <a href="#/note/" class="white" use:link onclick={newNote}
             >New Note</a
          >
       </li>
@@ -57,7 +69,11 @@
          <!-- </div> -->
          <ul>
             {#each recentNote as note}
-               <li><a href={"#/note/" + note.notaID} class="white" use:link>{note.titulo}</a></li>
+               <li>
+                  <a href={"#/note/" + note.notaID} class="white" use:link
+                     >{note.titulo}</a
+                  >
+               </li>
             {/each}
          </ul>
       </li>
