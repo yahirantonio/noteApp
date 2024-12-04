@@ -3,9 +3,52 @@
    import InputDate from "../lib/InputDate.svelte";
    import Note from "../lib/Note.svelte";
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
-   import { dataNotes, dataStatus } from "../stores/store";
+   import { dataNotes, dataStatus, today } from "../stores/store";
 
-   const notes = $derived($dataNotes);
+   import Fuse from "fuse.js";
+
+   const options = {
+      threshold: 0.4, // Cuanto más bajo, más estricta es la búsqueda (0.0 - 1.0)
+      keys: ["titulo", "etiqueta"],
+   };
+
+   let date = $state($today);
+   let stages = $state([]);
+   let title = $state("");
+   let category = $state("");
+
+   const notes = $derived.by(() => {
+      let data = $dataNotes.filter((note) => note.fecha == date);
+
+      if(stages.length > 0){
+         data = data.filter(note => stages.includes(note.estadoID));
+      }
+
+      if(category.length == 0 && title.length == 0) return data;
+
+      let query = { $and: [] };
+
+      if (category.length > 0) {
+         query.$and.push({
+            $path: ["etiqueta"],
+            $val: category,
+         });
+      }
+
+      if (title.length > 0) {
+         query.$and.push({
+            $path: ["titulo"],
+            $val: title,
+         });
+      }
+
+      const fuse = new Fuse(data, options);
+      let resultado = fuse.search(query);
+
+      return resultado.map((value) => value.item);
+   });
+
+   
 </script>
 
 <header class="header">
@@ -21,24 +64,24 @@
          <form action="">
             <div class="input_container">
                <label for="title" class="label_container">Titulo</label>
-               <input type="text" class="title_input"/>
+               <input type="text" class="title_input" bind:value={title} />
             </div>
             <div class="input_container">
                <label for="" class="label_container">Fecha</label>
-               <InputDate />
+               <InputDate bind:date />
             </div>
             <div class="input_container">
                <label for="" class="label_container">Estado</label>
                {#each $dataStatus as status}
                   <label>
-                     <input type="checkbox" value={status.estadoID} >
+                     <input type="checkbox" value={status.estadoID} bind:group={stages}/>
                      {status.nombre}
                   </label>
                {/each}
             </div>
             <div class="input_container">
                <label for="" class="label_container">Etiqueta</label>
-               <input type="text" class="label_input"/>
+               <input type="text" class="label_input" bind:value={category} />
             </div>
          </form>
          <button class="drop">Eliminar</button>
@@ -83,7 +126,7 @@
       gap: 20px;
    }
 
-   .title_input{
+   .title_input {
       border: 0;
       border-radius: 10px;
       font-size: 1.25rem;
@@ -98,27 +141,32 @@
    }
 
    .label_container {
-      font-family: 'Lato';
+      font-family: "Lato";
       font-weight: 600;
       font-size: 1.125rem;
       margin-bottom: 17px;
    }
 
-   .label_input{
+   .label_input {
       font-size: 1.25rem;
       padding: 10px;
       border: 0;
       background-color: transparent;
-      border-bottom: 1px solid #CDCDCD;
+      border-bottom: 1px solid #cdcdcd;
    }
 
-   .drop{
-      background-color: #E56969;
+   .drop {
+      background-color: #e56969;
       color: white;
       font-weight: bold;
       font-size: 1.5rem;
       padding: 5.5px 26px;
       border: 0px;
       border-radius: 16px;
+      cursor:pointer
+   }
+
+   .drop:hover {
+      background-color: #fa7b7b;
    }
 </style>
