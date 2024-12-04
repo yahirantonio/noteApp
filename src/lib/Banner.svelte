@@ -89,14 +89,14 @@
 <style>
    .nav {
       background-color: #333;
-      position: absolute;
+      position: fixed;
       left: 0px;
       top: 0px;
       width: 250px;
       max-width: 250px;
       padding: 0px 19px 0 19px;
       z-index: 2;
-      height: 100vh;
+      height: 100%;
       border-radius: 0 20px 20px 0;
       color: white;
       transform: translateX(0);
