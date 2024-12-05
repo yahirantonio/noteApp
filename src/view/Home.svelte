@@ -70,7 +70,7 @@
 <style>
   .header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin: 0 100px;
     margin-bottom: 26px;
@@ -101,7 +101,7 @@
   .notes_container {
     width: 90%;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
     margin: auto;
     margin-top: 40px;
