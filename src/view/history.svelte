@@ -84,7 +84,6 @@
                <input type="text" class="label_input" bind:value={category} />
             </div>
          </form>
-         <button class="drop">Eliminar</button>
       </div>
 
       <div class="notes">
@@ -153,20 +152,5 @@
       border: 0;
       background-color: transparent;
       border-bottom: 1px solid #cdcdcd;
-   }
-
-   .drop {
-      background-color: #e56969;
-      color: white;
-      font-weight: bold;
-      font-size: 1.5rem;
-      padding: 5.5px 26px;
-      border: 0px;
-      border-radius: 16px;
-      cursor:pointer
-   }
-
-   .drop:hover {
-      background-color: #fa7b7b;
    }
 </style>
