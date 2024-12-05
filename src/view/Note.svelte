@@ -14,6 +14,8 @@
    let { params } = $props();
    let quill;
 
+   let savebutton;
+
    $note = params.id
       ? $dataNotes.find((dataNote) => dataNote.notaID == params.id)
       : {
@@ -21,14 +23,16 @@
            texto: "Escribe tu texto aqui...",
            etiqueta: "Etiqueta...",
            fecha: $today,
-           content: [{ insert: "Escribe tu texto aqui...\n" }],
+           content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
            estadoID: 1,
         };
 
-   $effect(()=>{
-      params.id
-      if(quill) {quill.setContents($note.content);}
-   })
+   $effect(() => {
+      params.id;
+      if (quill) {
+         quill.setContents($note.content);
+      }
+   });
 
    onMount(() => {
       quill = new Quill("#editor", {
@@ -36,11 +40,44 @@
       });
 
       quill.setContents($note.content);
+
+      if (params.id) {
+         savebutton.disabled = true;
+      }
+
+      quill.on("text-change", () => {
+         const currentDelta = quill.getContents();
+         if (JSON.stringify($note.content) == JSON.stringify(currentDelta)) {
+            savebutton.disabled = true;
+            console.log("entro  true");
+         } else {
+            savebutton.disabled = false;
+            console.log("entro  true");
+         }
+      });
+   });
+
+   $effect(() => {
+      $note;
+      let nota = $dataNotes.find((dataNote) => dataNote.notaID == params.id);
+      if (
+         nota &&
+         nota.titulo === $note.titulo &&
+         nota.etiqueta === $note.etiqueta &&
+         nota.fecha == $note.fecha &&
+         nota.estadoID == $note.estadoID
+      ) {
+         savebutton.disabled = true;
+      } else {
+         savebutton.disabled = false;
+      }
+
+      if (!nota) savebutton.disabled = false;
    });
 
    function save() {
       $note.texto = quill.getSemanticHTML();
-      $note.content = quill.getContents().ops;
+      $note.content = quill.getContents();
 
       if (params.id) {
          putNote($note);
@@ -48,6 +85,8 @@
          const id = postNote($note);
          replace("/note/" + id);
       }
+
+      savebutton.disabled = true;
    }
 
    function drop() {
@@ -81,7 +120,7 @@
    <div id="editor">
       <!-- {$note.texto} -->
    </div>
-   <button class="save" onclick={save}>Guardar</button>
+   <button class="save" onclick={save} bind:this={savebutton}>Guardar</button>
    <button class="delete" onclick={drop}>Eliminar</button>
 </main>
 
@@ -154,6 +193,10 @@
 
    .save:hover {
       background-color: rgb(11, 158, 11);
+   }
+
+   .save:disabled {
+      background-color: gray;
    }
 
    .delete {
