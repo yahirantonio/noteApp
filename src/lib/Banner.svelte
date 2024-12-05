@@ -1,6 +1,7 @@
 <script>
    import { link } from "svelte-spa-router";
    import { dataNotes, invisibleBanner, note, today } from "../stores/store";
+    import { untrack } from "svelte";
 
    let date = new Date();
 
@@ -23,16 +24,21 @@
       invisibleBanner.set(true);
    }
 
-   function newNote() {
+   function viewNote(id = 0) {
       switchSideBar();
-      $note = {
-         titulo: "Titulo...",
-         texto: "Escribe tu texto aqui...",
-         etiqueta: "Etiqueta...",
-         fecha: $today,
-         content: [{ insert: "Escribe tu texto aqui...\n" }],
-         estadoID: 1,
-      };
+
+      $note = id
+      ? untrack(() =>
+           $dataNotes.find((dataNote) => dataNote.notaID == id),
+        )
+      : {
+           titulo: "Titulo...",
+           texto: "Escribe tu texto aqui...",
+           etiqueta: "Etiqueta...",
+           fecha: $today,
+           content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
+           estadoID: 1,
+        }
    }
 </script>
 
@@ -58,7 +64,7 @@
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/note/" class="white" use:link onclick={newNote}
+         <a href="#/note/" class="white" use:link onclick={() => viewNote(0)}
             >New Note</a
          >
       </li>
@@ -70,7 +76,7 @@
          <ul>
             {#each recentNote as note}
                <li>
-                  <a href={"#/note/" + note.notaID} class="white" use:link
+                  <a href={"#/note/" + note.notaID} class="white" use:link onclick={ () => viewNote(note.notaID)}
                      >{note.titulo}</a
                   >
                </li>

@@ -77,8 +77,6 @@
       if (!notaInicial) savebutton.disabled = false;
    });
 
-   $inspect(notaInicial);
-
    function save() {
       $note.texto = quill.getSemanticHTML();
       $note.content = quill.getContents();
