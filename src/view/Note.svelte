@@ -16,10 +16,14 @@
 
    let savebutton;
 
-   let notaInicial = $derived($dataNotes.find((dataNote) => dataNote.notaID == params.id))
+   let notaInicial = $derived(
+      $dataNotes.find((dataNote) => dataNote.notaID == params.id),
+   );
 
    $note = params.id
-      ? untrack(()=>$dataNotes.find((dataNote) => dataNote.notaID == params.id))
+      ? untrack(() =>
+           $dataNotes.find((dataNote) => dataNote.notaID == params.id),
+        )
       : {
            titulo: "Titulo...",
            texto: "Escribe tu texto aqui...",
@@ -47,7 +51,11 @@
          savebutton.disabled = true;
       }
 
-      quill.on("text-change", () => ($note.content = quill.getContents()));
+      quill.on("text-change", () => {
+         const delta = quill.getContents();
+         console.log(delta.ops)
+         if (JSON.stringify($note.content.ops) !== JSON.stringify(delta.ops) ) $note.content = delta;
+      });
    });
 
    $effect(() => {
@@ -58,24 +66,25 @@
          notaInicial.etiqueta === $note.etiqueta &&
          notaInicial.fecha == $note.fecha &&
          notaInicial.estadoID == $note.estadoID &&
-         JSON.stringify(notaInicial.content.ops) == JSON.stringify($note.content.ops)
+         JSON.stringify(notaInicial.content.ops) ==
+            JSON.stringify($note.content.ops)
       ) {
          savebutton.disabled = true;
       } else {
          savebutton.disabled = false;
       }
-      
+
       if (!notaInicial) savebutton.disabled = false;
    });
 
-   $inspect(notaInicial)
-   
+   $inspect(notaInicial);
+
    function save() {
       $note.texto = quill.getSemanticHTML();
       $note.content = quill.getContents();
 
       if (params.id) {
-         putNote({...$note});
+         putNote({ ...$note });
       } else {
          const id = postNote($note);
          replace("/note/" + id);
