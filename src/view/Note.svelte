@@ -6,7 +6,7 @@
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
 
    import { dataNotes, dataStatus, today, note } from "../stores/store";
-   import { onMount } from "svelte";
+   import { onMount, untrack } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
    import { dropNote, postNote, putNote } from "../utils/api";
    import { replace } from "svelte-spa-router";
@@ -16,8 +16,10 @@
 
    let savebutton;
 
+   let notaInicial = $derived($dataNotes.find((dataNote) => dataNote.notaID == params.id))
+
    $note = params.id
-      ? $dataNotes.find((dataNote) => dataNote.notaID == params.id)
+      ? untrack(()=>$dataNotes.find((dataNote) => dataNote.notaID == params.id))
       : {
            titulo: "Titulo...",
            texto: "Escribe tu texto aqui...",
@@ -45,42 +47,35 @@
          savebutton.disabled = true;
       }
 
-      quill.on("text-change", () => {
-         const currentDelta = quill.getContents();
-         if (JSON.stringify($note.content) == JSON.stringify(currentDelta)) {
-            savebutton.disabled = true;
-            console.log("entro  true");
-         } else {
-            savebutton.disabled = false;
-            console.log("entro  true");
-         }
-      });
+      quill.on("text-change", () => ($note.content = quill.getContents()));
    });
 
    $effect(() => {
       $note;
-      let nota = $dataNotes.find((dataNote) => dataNote.notaID == params.id);
       if (
-         nota &&
-         nota.titulo === $note.titulo &&
-         nota.etiqueta === $note.etiqueta &&
-         nota.fecha == $note.fecha &&
-         nota.estadoID == $note.estadoID
+         notaInicial &&
+         notaInicial.titulo === $note.titulo &&
+         notaInicial.etiqueta === $note.etiqueta &&
+         notaInicial.fecha == $note.fecha &&
+         notaInicial.estadoID == $note.estadoID &&
+         JSON.stringify(notaInicial.content.ops) == JSON.stringify($note.content.ops)
       ) {
          savebutton.disabled = true;
       } else {
          savebutton.disabled = false;
       }
-
-      if (!nota) savebutton.disabled = false;
+      
+      if (!notaInicial) savebutton.disabled = false;
    });
 
+   $inspect(notaInicial)
+   
    function save() {
       $note.texto = quill.getSemanticHTML();
       $note.content = quill.getContents();
 
       if (params.id) {
-         putNote($note);
+         putNote({...$note});
       } else {
          const id = postNote($note);
          replace("/note/" + id);
