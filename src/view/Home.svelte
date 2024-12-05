@@ -70,7 +70,7 @@
 <style>
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin: 0 100px;
     margin-bottom: 26px;

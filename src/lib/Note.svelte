@@ -29,8 +29,8 @@
    .card {
       display: flex;
       flex-direction: column;
-      max-width: 306px;
-      min-height: 232px;
+      width: 306px;
+      height: 232px;
       padding: 15px;
       background-color: white;
       border-radius: 20px;
