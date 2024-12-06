@@ -1,13 +1,8 @@
 <script>
    import { link } from "svelte-spa-router";
-   import { dataNotes, invisibleBanner, note, today } from "../stores/store";
-    import { untrack } from "svelte";
+   import { dataNotes, invisibleBanner, today } from "../stores/store";
 
    let date = new Date();
-
-   // const recentNote = $derived(
-   //    $dataNotes.filter((note) => note.fecha == $today),
-   // );
 
    const recentNote = $derived.by(() => {
       let count = 0;
@@ -22,23 +17,6 @@
 
    function switchSideBar() {
       invisibleBanner.set(true);
-   }
-
-   function viewNote(id = 0) {
-      switchSideBar();
-
-      $note = id
-      ? untrack(() =>
-           $dataNotes.find((dataNote) => dataNote.notaID == id),
-        )
-      : {
-           titulo: "Titulo...",
-           texto: "Escribe tu texto aqui...",
-           etiqueta: "Etiqueta...",
-           fecha: $today,
-           content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
-           estadoID: 1,
-        }
    }
 </script>
 
@@ -64,7 +42,7 @@
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/note/" class="white" use:link onclick={() => viewNote(0)}
+         <a href="/note/" class="white" use:link onclick={() => switchSideBar}
             >New Note</a
          >
       </li>
@@ -76,7 +54,7 @@
          <ul>
             {#each recentNote as note}
                <li>
-                  <a href={"#/note/" + note.notaID} class="white" use:link onclick={ () => viewNote(note.notaID)}
+                  <a href={"/note/" + note.notaID} class="white" use:link onclick={switchSideBar}
                      >{note.titulo}</a
                   >
                </li>

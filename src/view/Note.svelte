@@ -5,8 +5,8 @@
    import Banner from "../lib/Banner.svelte";
    import SwitchSideBar from "../lib/SwitchSideBar.svelte";
 
-   import { dataNotes, dataStatus, today, note } from "../stores/store";
-   import { onMount, untrack } from "svelte";
+   import { dataNotes, dataStatus, today } from "../stores/store";
+   import { onDestroy, onMount } from "svelte";
    import InputDate from "../lib/InputDate.svelte";
    import { dropNote, postNote, putNote } from "../utils/api";
    import { replace } from "svelte-spa-router";
@@ -20,23 +20,52 @@
       $dataNotes.find((dataNote) => dataNote.notaID == params.id),
    );
 
-   $note = params.id
-      ? untrack(() =>
-           $dataNotes.find((dataNote) => dataNote.notaID == params.id),
-        )
-      : {
-           titulo: "Titulo...",
-           texto: "Escribe tu texto aqui...",
-           etiqueta: "Etiqueta...",
-           fecha: $today,
-           content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
-           estadoID: 1,
-        };
+   let note = $state(
+      params.id
+         ? $dataNotes.find((dataNote) => dataNote.notaID == params.id)
+         : {
+              titulo: "Titulo...",
+              texto: "Escribe tu texto aqui...",
+              etiqueta: "Etiqueta...",
+              fecha: $today,
+              content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
+              estadoID: 1,
+           },
+   );
+
+   const updateByUrl = () => {
+      const id = parseInt(
+         window.location.href.charAt(window.location.href.length - 1),
+      );
+      note = id
+         ? $dataNotes.find((note) => note.notaID == id)
+         : {
+              titulo: "Titulo...",
+              texto: "Escribe tu texto aqui...",
+              etiqueta: "Etiqueta...",
+              fecha: $today,
+              content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
+              estadoID: 1,
+           };
+   };
+
+   const updateNote = () => {
+      const delta = quill.getContents();
+      if (JSON.stringify(note.content.ops) !== JSON.stringify(delta.ops))
+      note.content = delta;
+   };
+
+   window.addEventListener("popstate", updateByUrl);
+
+   onDestroy(() => {
+      window.removeEventListener("popstate", updateByUrl);
+      quill.off("text-change", updateNote);
+   });
 
    $effect(() => {
       params.id;
       if (quill) {
-         quill.setContents($note.content);
+         quill.setContents(note.content);
       }
    });
 
@@ -45,29 +74,25 @@
          theme: "snow",
       });
 
-      quill.setContents($note.content);
+      quill.setContents(note.content.ops);
 
       if (params.id) {
          savebutton.disabled = true;
       }
 
-      quill.on("text-change", () => {
-         const delta = quill.getContents();
-         console.log(delta.ops)
-         if (JSON.stringify($note.content.ops) !== JSON.stringify(delta.ops) ) $note.content = delta;
-      });
+      quill.on("text-change", updateNote);
    });
 
    $effect(() => {
-      $note;
+      note;
       if (
          notaInicial &&
-         notaInicial.titulo === $note.titulo &&
-         notaInicial.etiqueta === $note.etiqueta &&
-         notaInicial.fecha == $note.fecha &&
-         notaInicial.estadoID == $note.estadoID &&
+         notaInicial.titulo === note.titulo &&
+         notaInicial.etiqueta === note.etiqueta &&
+         notaInicial.fecha == note.fecha &&
+         notaInicial.estadoID == note.estadoID &&
          JSON.stringify(notaInicial.content.ops) ==
-            JSON.stringify($note.content.ops)
+            JSON.stringify(note.content.ops)
       ) {
          savebutton.disabled = true;
       } else {
@@ -78,22 +103,24 @@
    });
 
    function save() {
-      $note.texto = quill.getSemanticHTML();
-      $note.content = quill.getContents();
+      note.texto = quill.getSemanticHTML();
+      note.content = quill.getContents();
 
       if (params.id) {
-         putNote({ ...$note });
+         putNote({ ...note });
       } else {
-         const id = postNote($note);
+         const id = postNote(note);
          replace("/note/" + id);
       }
 
       savebutton.disabled = true;
    }
 
+   $inspect($dataNotes)
+
    function drop() {
-      if ($note.notaID) {
-         dropNote($note.notaID);
+      if (note.notaID >= 0) {
+         dropNote(note.notaID);
          replace("/");
       } else {
          replace("/");
@@ -103,21 +130,21 @@
 
 <header class="header">
    <SwitchSideBar />
-   <InputDate bind:date={$note.fecha} />
+   <InputDate bind:date={note.fecha} />
 </header>
 
 <main class="main">
    <Banner />
-   <input type="text" class="berkshire titulo" bind:value={$note.titulo} />
+   <input type="text" class="berkshire titulo" bind:value={note.titulo} />
    <div class="body">
-      <select name="states" id="inputStates" bind:value={$note.estadoID}>
+      <select name="states" id="inputStates" bind:value={note.estadoID}>
          {#each $dataStatus as status}
             <option value={status.estadoID} class="option"
                >{status.nombre}</option
             >
          {/each}
       </select>
-      <input type="text" class="etiqueta" bind:value={$note.etiqueta} />
+      <input type="text" class="etiqueta" bind:value={note.etiqueta} />
    </div>
    <div id="editor">
       <!-- {$note.texto} -->

@@ -22,15 +22,6 @@ export const dataStatus = readable([
    }
 ])
 
-export const note = writable({
-   titulo: "Titulo...",
-   texto: "Escribe tu texto aqui...",
-   etiqueta: "Etiqueta...",
-   fecha: date,
-   content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
-   estadoID: 1,
-})
-
 export const dataNotes = writable([
    {
       "notaID": 1,

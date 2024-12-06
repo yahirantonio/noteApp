@@ -16,7 +16,7 @@ export const postNote = (data) => {
    let notaID = 0;
    dataNotes.update(datanote => {
       const lastElement = datanote[datanote.length - 1];
-      notaID = lastElement.notaID + 1;
+      notaID = lastElement ? lastElement.notaID + 1 : 0;
       return [...datanote, { ...data, notaID}]
    })
    return notaID;
