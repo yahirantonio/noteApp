@@ -1,6 +1,7 @@
 <script>
    import { link } from "svelte-spa-router";
-   import { dataNotes, invisibleBanner, today } from "../stores/store";
+   import { dataNotes, invisibleBanner, note, today } from "../stores/store";
+    import { untrack } from "svelte";
 
    let date = new Date();
 
@@ -8,19 +9,36 @@
    //    $dataNotes.filter((note) => note.fecha == $today),
    // );
 
-   const recentNote = $derived.by(()=>{
+   const recentNote = $derived.by(() => {
       let count = 0;
       return $dataNotes.filter((note) => {
-         if(note.fecha == $today && count < 3){
+         if (note.fecha == $today && count < 3) {
             count++;
-            return true
+            return true;
          }
          return false;
-      })
+      });
    });
 
    function switchSideBar() {
       invisibleBanner.set(true);
+   }
+
+   function viewNote(id = 0) {
+      switchSideBar();
+
+      $note = id
+      ? untrack(() =>
+           $dataNotes.find((dataNote) => dataNote.notaID == id),
+        )
+      : {
+           titulo: "Titulo...",
+           texto: "Escribe tu texto aqui...",
+           etiqueta: "Etiqueta...",
+           fecha: $today,
+           content: { ops: [{ insert: "Escribe tu texto aqui...\n" }] },
+           estadoID: 1,
+        }
    }
 </script>
 
@@ -46,7 +64,7 @@
       </li>
       <li class="link_container">
          <span class="material-symbols-outlined sizing"> note_add </span>
-         <a href="#/note/" class="white" use:link onclick={switchSideBar}
+         <a href="#/note/" class="white" use:link onclick={() => viewNote(0)}
             >New Note</a
          >
       </li>
@@ -57,7 +75,11 @@
          <!-- </div> -->
          <ul>
             {#each recentNote as note}
-               <li><a href={"#/note/" + note.notaID} class="white" use:link>{note.titulo}</a></li>
+               <li>
+                  <a href={"#/note/" + note.notaID} class="white" use:link onclick={ () => viewNote(note.notaID)}
+                     >{note.titulo}</a
+                  >
+               </li>
             {/each}
          </ul>
       </li>
@@ -73,14 +95,14 @@
 <style>
    .nav {
       background-color: #333;
-      position: absolute;
+      position: fixed;
       left: 0px;
       top: 0px;
       width: 250px;
       max-width: 250px;
       padding: 0px 19px 0 19px;
       z-index: 2;
-      height: 100vh;
+      height: 100%;
       border-radius: 0 20px 20px 0;
       color: white;
       transform: translateX(0);

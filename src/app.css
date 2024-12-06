@@ -378,18 +378,6 @@ template {
    display: none;
 }
 
-.progress{
-   background: #28C9CC;
-}
-
-.todo{
-   background: #52CF1B;
-}
-
-.done{
-   background: #DE4C4C;
-}
-
 .monserrat{
    font-family: 'Montserrat';
 }
@@ -436,4 +424,16 @@ a:hover{
 
 .progreso{
    box-shadow: 0 4px 20px #28C9CC;
+}
+
+.progress{
+   background: #28C9CC;
+}
+
+.todo{
+   background: #DE4C4C;
+}
+
+.done{
+   background: #52CF1B;
 }

@@ -101,7 +101,7 @@
   .notes_container {
     width: 90%;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: center;
     align-items: center;
     margin: auto;
     margin-top: 40px;
