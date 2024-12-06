@@ -16,19 +16,6 @@
 
    const id = $derived(params.id);
 
-   // let nose = $derived.by(() => {
-   //    return params.id
-   //       ? $dataNotes.find((note) => note.notaID == params.id)
-   //       : {
-   //            titulo: "Titulo...",
-   //            texto: "Escribe tu texto aqui...",
-   //            etiqueta: "Etiqueta...",
-   //            fecha: $today,
-   //            content: [{ insert: "Escribe tu texto aqui...\n" }],
-   //            estadoID: 1,
-   //         };
-   // });
-
    let note = $state(
       params.id
          ? $dataNotes.find((note) => note.notaID == params.id)
@@ -41,6 +28,19 @@
               estadoID: 1,
            },
    );
+
+   window.addEventListener('popstate',(e)=>{
+      note = params.id
+         ? $dataNotes.find((note) => note.notaID == params.id)
+         : {
+              titulo: "Titulo...",
+              texto: "Escribe tu texto aqui...",
+              etiqueta: "Etiqueta...",
+              fecha: $today,
+              content: [{ insert: "Escribe tu texto aqui...\n" }],
+              estadoID: 1,
+           }
+   })
 
    $effect(() => {
       if (id) {
