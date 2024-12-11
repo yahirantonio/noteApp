@@ -116,8 +116,6 @@
       savebutton.disabled = true;
    }
 
-   $inspect($dataNotes)
-
    function drop() {
       if (note.notaID >= 0) {
          dropNote(note.notaID);
